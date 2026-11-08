@@ -477,7 +477,14 @@ function openShop() {
   renderShop();
   showOv("ov-shop");
 }
-function closeShop() { showOv(null); if (G.state === "menu") {} }
+function closeShop() {
+  if (G.state === "playing" || G.state === "paused") {
+    $("ov-shop").classList.remove("show");
+  } else {
+    showOv("ov-menu");
+  }
+  updateMenuStats();
+}
 function renderShop() {
   const g = $("shop-grid");
   g.innerHTML = "";
