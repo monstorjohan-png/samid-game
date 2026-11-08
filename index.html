@@ -1514,6 +1514,26 @@ setInterval(function () {
   if (now - lastStep > 60) step(now);
 }, 50);
 
+/* ============ PWA: Service Worker + التثبيت ============ */
+let deferredInstall = null;
+function installApp() {
+  if (!deferredInstall) return;
+  deferredInstall.prompt();
+  deferredInstall.userChoice.then(function () { deferredInstall = null; });
+  const btn = document.getElementById("btn-install");
+  if (btn) btn.hidden = true;
+}
+window.addEventListener("beforeinstallprompt", function (e) {
+  e.preventDefault();
+  deferredInstall = e;
+  const btn = document.getElementById("btn-install");
+  if (btn) btn.hidden = false;
+});
+window.addEventListener("appinstalled", function () {
+  deferredInstall = null;
+  const btn = document.getElementById("btn-install");
+  if (btn) btn.hidden = true;
+});
 /* ============ الربط ============ */
 $("btn-shop").addEventListener("click", openShop);
 $("btn-shopclose").addEventListener("click", closeShop);
